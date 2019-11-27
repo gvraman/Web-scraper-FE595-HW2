@@ -4,26 +4,32 @@ Created on Tue Nov 12 16:07:40 2019
 
 @author: gaura
 """
-
 from bs4 import BeautifulSoup
 import requests
-
-for i in range(0,50,1):
+import pandas as pd
+maleheroes=[]
+femaleheroes=[]
+for i in range (0,50,1):
     page = requests.get("https://theyfightcrime.org/")
+#   page
+#   page.content
     page.status_code
-    
     soup = BeautifulSoup(page.content, 'html.parser')
-    soup.find_all('p')
-    full=soup.find_all('p')[1].get_text()
-    split=[x for x in map(str.strip, full.split('.')) if x]
-
-    male=split[0]
-    female=split[1]
+    text = soup.find_all('p')
+    all = list(text)
+    p = all[1]
+    p.get_text()
+    combined = p.get_text().split('.')
+    male = combined[0]
+    female = combined[1]
+    maleheroes.append(male)
+    femaleheroes.append(female)
     
-    f= open("Male.txt","a+")
-    f.write(f"\n{male}")
-    
-    g= open("Female.txt","a+")
-    g.write(f"\n{female}")
-    i+=1
+with open("Male.txt", "w") as f:
+    for i in maleheroes:
+        f.write("{}\n".format(i))
+        
+with open("Female.txt", "w") as f:
+    for i in femaleheroes:
+        f.write("{}\n".format(i))
     
